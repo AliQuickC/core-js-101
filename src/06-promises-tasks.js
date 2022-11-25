@@ -5,7 +5,6 @@
  *                                                                                                *
  ************************************************************************************************ */
 
-
 /**
  * Return Promise object that is resolved with string value === 'Hooray!!! She said "Yes"!',
  * if boolean value === true is passed, resolved with string value === 'Oh no, she said "No".',
@@ -28,8 +27,12 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((resolve, reject) => {
+    if (typeof isPositiveAnswer !== 'boolean') { reject(new Error('Wrong parameter is passed! Ask her again.')); }
+    if (isPositiveAnswer) { resolve('Hooray!!! She said "Yes"!'); }
+    resolve('Oh no, she said "No".');
+  });
 }
 
 
@@ -48,8 +51,9 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array);
+  // throw new Error('Not implemented');
 }
 
 /**
@@ -71,8 +75,9 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array);
+  // throw new Error('Not implemented');
 }
 
 /**
@@ -92,9 +97,14 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+function chainPromises(array, action) {
+  return array.reduce((summ, item) => (summ.then((x) => item.then((y) => action(x, y), () => new Error('there are should not be any Unhandled Rejections!')), () => new Error('there are should not be any Unhandled Rejections!'))));
+  // throw new Error('Not implemented');
 }
+// return array.reduce((summ, item) => Promise.all([summ, item]).then((x) => {
+//   console.log('x: ', x);
+//   return action(x[0], x[1]);
+// }));
 
 module.exports = {
   willYouMarryMe,
